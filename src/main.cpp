@@ -20,6 +20,7 @@ void setup()
   Serial.begin(9600);
   plantHandler.setup();
   ble.setupPeripherial();
+  plantHandler.bleHandler(&ble);
 }
 
 void loop()
@@ -30,13 +31,7 @@ void loop()
 
 void readCallback()
 {
-  plantHandler.read();
-  // digitalWrite(1, HIGH);
-  // delay(100);
-  // Serial.println("Analog!");
-  // int light = analogRead(4);
-  // int water = analogRead(3);
-  // Serial.println(light);
-  // Serial.println(water);
-  // digitalWrite(1, LOW);
+  Serial.write("sending data!\n");
+  // plantHandler.read();
+  ble.writeWater(100);
 }

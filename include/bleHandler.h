@@ -1,9 +1,10 @@
 #pragma once
 #include <SPI.h>
 #include <BLEPeripheral.h>
+#include "iBleHandler.h"
 namespace PlantMonitor
 {
-    class BleHandler
+    class BleHandler : public IBleHandler
     {
 
     public:
@@ -11,15 +12,18 @@ namespace PlantMonitor
         ~BleHandler();
         void poll();
         void setupPeripherial();
+        void writeWater(uint32_t val) override;
+        void writeLigth(uint32_t val) override;
+        bool isConnected() override;
 
     private:
         static BleHandler *mInstance;
+        BLEService *mPlantService;
         BLEPeripheral *mblePeripherial;
-        BLEService *mLedServie;
-        BLECharCharacteristic *mLedChar;
-
+        BLEDescriptor *mPlantDescriptor;
+        BLECharacteristic *mPlantCharacteristics;
         static void blePeripheralConnectHandler(BLECentral &central);
         static void blePeripheralDisconnectHandler(BLECentral &central);
-        static void switchCharacteristicWritten(BLECentral &central, BLECharacteristic &characteristic);
+        static void bleDiscovered(BLECentral &central);
     };
 }
